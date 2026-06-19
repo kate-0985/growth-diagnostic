@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>AI Campaign Architect — маркетинговая стратегия за 30 секунд</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #ffffff;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      color: #111111;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    .app {
+      max-width: 860px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+    .hero {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      padding: 1.5rem 0 0.5rem;
+    }
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #0a0a0a;
+    }
+    .hero p {
+      font-size: 1rem;
+      color: #555;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .btn {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.75rem 1.8rem;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      letter-spacing: -0.1px;
+      box-shadow: 0 4px 14px rgba(79,70,229,0.15);
+    }
+    .btn:hover {
+      background: #4338ca;
+      box-shadow: 0 8px 20px rgba(79,70,229,0.2);
+    }
+    .btn:disabled {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .input-card {
+      background: #fafbfc;
+      border: 1px solid #e9ecf1;
+      border-radius: 20px;
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 600px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #555;
+    }
+    input {
+      background: #ffffff;
+      border: 1px solid #e2e6ed;
+      border-radius: 14px;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.9rem;
+      color: #111;
+      outline: none;
+      transition: 0.15s;
+      font-family: inherit;
+    }
+    input:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.06);
+    }
+    .loading-panel {
+      background: #f9fafc;
+      border-radius: 20px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      border: 1px solid #edf0f5;
+      text-align: center;
+    }
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+      color: #333;
+    }
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0.5;
+      transition: opacity 0.3s;
+    }
+    .step.active {
+      opacity: 1;
+      font-weight: 500;
+    }
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-top: 0.5rem;
+    }
+    @media (max-width: 640px) {
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #edf0f5;
+      border-radius: 18px;
+      padding: 1.3rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      transition: 0.2s;
+    }
+    .card:hover {
+      box-shadow: 0 8px 22px rgba(0,0,0,0.04);
+    }
+    .card-title {
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #4f46e5;
+    }
+    .card-content {
+      font-size: 0.9rem;
+      color: #222;
+      line-height: 1.5;
+    }
+    .badge {
+      background: #f3f4ff;
+      color: #4f46e5;
+      font-weight: 600;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.7rem;
+      border-radius: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    hr {
+      border: 0.5px solid #eef1f6;
+    }
+    .fade-in {
+      animation: fadeSlide 0.4s ease forwards;
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    @keyframes fadeSlide {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .stagger-1 { animation-delay: 0.05s; }
+    .stagger-2 { animation-delay: 0.1s; }
+    .stagger-3 { animation-delay: 0.15s; }
+    .stagger-4 { animation-delay: 0.2s; }
+    .stagger-5 { animation-delay: 0.25s; }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="hero">
+    <h1>Создайте маркетинговую стратегию за 30 секунд</h1>
+    <p>AI генерирует полный план привлечения клиентов на основе вашей ниши и продукта</p>
+  </div>
+
+  <div id="inputSection" class="input-card">
+    <div class="row">
+      <div class="field">
+        <label>Ниша</label>
+        <input type="text" id="nicheInput" placeholder="например: фитнес, SaaS, стоматология" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Продукт / услуга</label>
+        <input type="text" id="productInput" placeholder="что именно продаёте" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Цена</label>
+        <input type="text" id="priceInput" placeholder="например: 5000 руб" autocomplete="off">
+      </div>
+    </div>
+    <button class="btn" id="generateBtn" style="width:100%;">⚡ Сгенерировать стратегию</button>
+  </div>
+
+  <div id="loadingSection" class="loading-panel hidden">
+    <div style="font-weight:600; font-size:1rem;">AI анализирует данные...</div>
+    <div class="steps" id="stepsContainer">
+      <div class="step" data-step="0">🔍 Анализ рынка...</div>
+      <div class="step" data-step="1">👥 Определение целевой аудитории...</div>
+      <div class="step" data-step="2">💎 Формирование оффера...</div>
+      <div class="step" data-step="3">📈 Построение стратегии привлечения...</div>
+    </div>
+  </div>
+
+  <div id="resultsSection" class="hidden"></div>
+</div>
+
+<script>
+  (function() {
+    const nicheInput = document.getElementById('nicheInput');
+    const productInput = document.getElementById('productInput');
+    const priceInput = document.getElementById('priceInput');
+    const generateBtn = document.getElementById('generateBtn');
+    const inputSection = document.getElementById('inputSection');
+    const loadingSection = document.getElementById('loadingSection');
+    const resultsSection = document.getElementById('resultsSection');
+
+    const TEMPLATES = {
+      fitness: {
+        avatar: { age: '22–38', role: 'активный городской житель', motivations: 'похудеть к лету, набрать форму', pain: 'нет времени, стыдно идти в зал', triggers: 'бесплатная пробная неделя, результат за 21 день' },
+        problems: ['Нет системы тренировок', 'Страх осуждения в зале', 'Быстрая потеря мотивации'],
+        uvp: 'Персональный план тренировок без похода в зал — результат через 3 недели',
+        offer: { headline: 'Тело мечты без абонемента в зал', hook: '21 день сопровождения', cta: 'Начать бесплатно' },
+        channels: { primary: 'Instagram / Reels (связки упражнений)', secondary: 'YouTube Shorts (тренер показывает технику)' },
+        landing: ['Главный экран: до/после + УТП', 'Программа по дням', 'Тарифы', 'FAQ + отзывы'],
+        leadMagnet: 'Чек-лист: 5 упражнений для плоского живота (без скручиваний)',
+        quiz: ['Какая у тебя цель?', 'Сколько дней в неделю готов тренироваться?', 'Есть ли опыт?', 'Что важнее: питание или тренировки?'],
+        telegram: ['Привет! Вот твой план на первую неделю', 'Смотри, как Катя сбросила 4 кг за 14 дней', 'Сегодня последний день скидки 30% на программу'],
+        plan: { m1: 'Запуск контента + тест Reels', m2: 'Наращивание охватов + лид-магнит', m3: 'Партнёрства с блогерами' }
+      },
+      saas: {
+        avatar: { age: '28–45', role: 'CEO / руководитель отдела', motivations: 'автоматизация, экономия времени', pain: 'ручные задачи, дорогие аналоги', triggers: 'демо-доступ, кейс с ROI' },
+        problems: ['Сотрудники тратят часы на рутину', 'Текущие решения слишком дороги', 'Нет прозрачной аналитики'],
+        uvp: 'Автоматизация [процесс] за 1 день — дешевле аналогов на 40%',
+        offer: { headline: 'Ваш отдел начнёт работать быстрее уже завтра', hook: 'Бесплатный аудит текущих процессов', cta: 'Получить демо' },
+        channels: { primary: 'LinkedIn (кейсы и цифры)', secondary: 'Email-рассылка по базе (вебинар)' },
+        landing: ['Шапка: калькулятор экономии', 'Блоки: возможности / интеграции', 'Тарифы', 'Кейсы'],
+        leadMagnet: 'Аудит: сколько часов вы теряете на рутине',
+        quiz: ['Сколько сотрудников в команде?', 'Какие задачи хотите автоматизировать?', 'Какой бюджет рассматриваете?'],
+        telegram: ['Спасибо за регистрацию на вебинар', 'Вот запись + слайды', 'Готовы обсудить пилотный запуск?'],
+        plan: { m1: 'Контент + сбор базы', m2: 'Вебинары + партнёры', m3: 'Масштабирование рекламы' }
+      },
+      medical: {
+        avatar: { age: '30–55', role: 'пациент с хронической проблемой', motivations: 'избавиться от боли, безопасность', pain: 'страх осложнений, непонятные цены', triggers: 'консультация бесплатно, гарантия результата' },
+        problems: ['Неясная стоимость лечения', 'Страх перед процедурой', 'Долгое ожидание записи'],
+        uvp: 'Лечение [проблема] за 1 визит — с гарантией и рассрочкой',
+        offer: { headline: 'Здоровая улыбка без боли и стресса', hook: 'Первая консультация — бесплатно', cta: 'Записаться' },
+        channels: { primary: 'Google Карты + отзывы', secondary: 'Instagram (истории пациентов)' },
+        landing: ['Первый экран: акция + кнопка записи', 'Врачи и оборудование', 'Цены', 'Отзывы'],
+        leadMagnet: 'Гайд: как подготовиться к приёму и сэкономить',
+        quiz: ['Какая проблема беспокоит?', 'Были ли операции ранее?', 'Удобное время для визита?'],
+        telegram: ['Напоминание о записи', 'Советы после приёма', 'Приведите друга — получите скидку'],
+        plan: { m1: 'Оформление карточек + отзывы', m2: 'Контент и акции', m3: 'Ретаргетинг и доп. услуги' }
+      },
+      ecommerce: {
+        avatar: { age: '20–35', role: 'покупатель онлайн', motivations: 'удобство, уникальность', pain: 'долгая доставка, неподходящий размер', triggers: 'скидка 15% на первый заказ, бесплатный возврат' },
+        problems: ['Неочевидная размерная сетка', 'Высокая цена доставки', 'Сложный возврат'],
+        uvp: 'Одежда, которая сидит идеально — или вернём деньги',
+        offer: { headline: 'Стиль, который подходит именно тебе', hook: 'Бесплатная примерка перед покупкой', cta: 'Выбрать образ' },
+        channels: { primary: 'TikTok / Instagram (распаковки)', secondary: 'Ретаргетинг по брошенной корзине' },
+        landing: ['Каталог с фильтрами', 'Карточка товара: размеры + отзывы', 'Корзина', 'Оформление'],
+        leadMagnet: 'Гид по стилю на сезон',
+        quiz: ['Какой стиль ближе?', 'Какие вещи носишь чаще?', 'Размер'],
+        telegram: ['Твой гид по стилю внутри', 'Новая коллекция уже здесь', 'Промокод на 10% до завтра'],
+        plan: { m1: 'Контент и посевы', m2: 'Работа с блогерами', m3: 'Масштабирование на другие площадки' }
+      }
+    };
+
+    const DEFAULT_TEMPLATE = TEMPLATES.saas;
+
+    function getTemplate(niche) {
+      const lower = niche.toLowerCase();
+      if (lower.includes('фитнес') || lower.includes('fitness')) return TEMPLATES.fitness;
+      if (lower.includes('saas') || lower.includes('софт') || lower.includes('сервис')) return TEMPLATES.saas;
+      if (lower.includes('стомат') || lower.includes('клиник') || lower.includes('медиц')) return TEMPLATES.medical;
+      if (lower.includes('ecom') || lower.includes('одежд') || lower.includes('товар')) return TEMPLATES.ecommerce;
+      return DEFAULT_TEMPLATE;
+    }
+
+    function simulateLoading(callback) {
+      loadingSection.classList.remove('hidden');
+      inputSection.classList.add('hidden');
+      resultsSection.classList.add('hidden');
+      const steps = document.querySelectorAll('#stepsContainer .step');
+      steps.forEach(s => s.classList.remove('active'));
+      let current = 0;
+      const interval = setInterval(() => {
+        if (current < steps.length) {
+          steps[current].classList.add('active');
+          current++;
+        } else {
+          clearInterval(interval);
+          setTimeout(() => {
+            loadingSection.classList.add('hidden');
+            callback();
+          }, 400);
+        }
+      }, 900);
+    }
+
+    function renderResults(niche, product, price) {
+      const tpl = getTemplate(niche);
+      const html = `
+        <div class="results-grid">
+          <div class="card fade-in stagger-1">
+            <div class="card-title">👤 Аватар клиента</div>
+            <div class="card-content">
+              <strong>Возраст:</strong> ${tpl.avatar.age}<br>
+              <strong>Роль:</strong> ${tpl.avatar.role}<br>
+              <strong>Мотивация:</strong> ${tpl.avatar.motivations}<br>
+              <strong>Боли:</strong> ${tpl.avatar.pain}<br>
+              <strong>Триггеры:</strong> ${tpl.avatar.triggers}
+            </div>
+          </div>
+          <div class="card fade-in stagger-2">
+            <div class="card-title">⚠️ Ключевые проблемы</div>
+            <div class="card-content">
+              ${tpl.problems.map(p => `• ${p}`).join('<br>')}
+            </div>
+          </div>
+          <div class="card fade-in stagger-3">
+            <div class="card-title">💎 УТП</div>
+            <div class="card-content">${tpl.uvp}</div>
+          </div>
+          <div class="card fade-in stagger-4">
+            <div class="card-title">📦 Оффер</div>
+            <div class="card-content">
+              <strong>Заголовок:</strong> ${tpl.offer.headline}<br>
+              <strong>Крючок:</strong> ${tpl.offer.hook}<br>
+              <strong>CTA:</strong> ${tpl.offer.cta}
+            </div>
+          </div>
+          <div class="card fade-in stagger-1">
+            <div class="card-title">📡 Каналы</div>
+            <div class="card-content">
+              <strong>Основной:</strong> ${tpl.channels.primary}<br>
+              <strong>Второй:</strong> ${tpl.channels.secondary}
+            </div>
+          </div>
+          <div class="card fade-in stagger-2">
+            <div class="card-title">📄 Структура лендинга</div>
+            <div class="card-content">${tpl.landing.map((l,i) => `${i+1}. ${l}`).join('<br>')}</div>
+          </div>
+          <div class="card fade-in stagger-3">
+            <div class="card-title">🎁 Лид-магнит</div>
+            <div class="card-content">${tpl.leadMagnet}</div>
+          </div>
+          <div class="card fade-in stagger-4">
+            <div class="card-title">❓ Квиз-воронка</div>
+            <div class="card-content">${tpl.quiz.map((q,i) => `${i+1}. ${q}`).join('<br>')}</div>
+          </div>
+          <div class="card fade-in stagger-1">
+            <div class="card-title">✉️ Telegram-прогрев</div>
+            <div class="card-content">${tpl.telegram.map((m,i) => `День ${i+1}: ${m}`).join('<br>')}</div>
+          </div>
+          <div class="card fade-in stagger-2">
+            <div class="card-title">📅 90-дневный план</div>
+            <div class="card-content">
+              <strong>Месяц 1:</strong> ${tpl.plan.m1}<br>
+              <strong>Месяц 2:</strong> ${tpl.plan.m2}<br>
+              <strong>Месяц 3:</strong> ${tpl.plan.m3}
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center; margin-top:1.5rem;">
+          <button class="btn" id="regenerateBtn">🔄 Сгенерировать заново</button>
+        </div>
+      `;
+      resultsSection.innerHTML = html;
+      resultsSection.classList.remove('hidden');
+      inputSection.classList.add('hidden');
+
+      document.getElementById('regenerateBtn').addEventListener('click', () => {
+        resultsSection.classList.add('hidden');
+        inputSection.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      setTimeout(() => {
+        resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+
+    generateBtn.addEventListener('click', () => {
+      const niche = nicheInput.value.trim() || 'SaaS';
+      const product = productInput.value.trim() || 'продукт';
+      const price = priceInput.value.trim() || 'не указана';
+
+      generateBtn.disabled = true;
+      simulateLoading(() => {
+        renderResults(niche, product, price);
+        generateBtn.disabled = false;
+      });
+    });
+  })();
+</script>
+</body>
+</html>
